@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-jms
+  xmlns="http://www.bea.com/ns/weblogic/90"
+  xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <connection-factory name="MedRecQueueConnectionFactory">
+    <sub-deployment-name>MedRecJMSServer</sub-deployment-name>
+    <local-jndi-name>jms/MedRecQueueConnectionFactory</local-jndi-name>
+    <transaction-params>
+      <xa-connection-factory-enabled>true</xa-connection-factory-enabled>
+    </transaction-params>
+  </connection-factory>
+  <queue name="REGISTRATION_MDB_QUEUE">
+    <sub-deployment-name>MedRecJMSServer</sub-deployment-name>
+    <delivery-failure-params>
+      <redelivery-limit>0</redelivery-limit>
+    </delivery-failure-params>
+    <local-jndi-name>jms/REGISTRATION_MDB_QUEUE</local-jndi-name>
+  </queue>
+  <queue name="MAIL_MDB_QUEUE">
+    <sub-deployment-name>MedRecJMSServer</sub-deployment-name>
+    <delivery-failure-params>
+      <redelivery-limit>0</redelivery-limit>
+    </delivery-failure-params>
+    <local-jndi-name>jms/MAIL_MDB_QUEUE</local-jndi-name>
+  </queue>
+  <queue name="XML_UPLOAD_MDB_QUEUE">
+    <sub-deployment-name>MedRecJMSServer</sub-deployment-name>
+    <delivery-failure-params>
+      <redelivery-limit>0</redelivery-limit>
+    </delivery-failure-params>
+    <local-jndi-name>jms/XML_UPLOAD_MDB_QUEUE</local-jndi-name>
+  </queue>
+</weblogic-jms>

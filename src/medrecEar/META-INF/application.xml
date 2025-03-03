@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<application xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="5">
+  <description>Medical Records Patient Application</description>
+  <display-name>Medical Records Patient Application</display-name>
+  <module>
+    <web>
+      <web-uri>adminWebApp</web-uri>
+      <context-root>admin</context-root>
+    </web>
+  </module>
+  <module>
+    <web>
+      <web-uri>mainWebApp</web-uri>
+      <context-root>/</context-root>
+    </web>
+  </module>
+  <module>
+    <web>
+      <web-uri>patientWebApp</web-uri>
+      <context-root>patient</context-root>
+    </web>
+  </module>
+  <module>
+    <ejb>entityEjbs</ejb>
+  </module>
+  <module>
+    <ejb>mdbEjbs</ejb>
+  </module>
+  <module>
+    <ejb>sessionEjbs</ejb>
+  </module>
+  <module>
+    <web>
+      <web-uri>MedRecWebServices</web-uri>
+      <context-root>ws_medrec</context-root>
+    </web>
+  </module>
+  <module>
+    <web>
+      <web-uri>MedRecRMWebServices</web-uri>
+      <context-root>ws_rm_medrec</context-root>
+    </web>
+  </module>
+</application>

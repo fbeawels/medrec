@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<application xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="5">
+  <description>Medical Records Physician Application</description>
+  <display-name>Medical Records Physician Application</display-name>
+  <module>
+    <ejb>physSessionEjbs</ejb>
+  </module>
+  <module>
+    <web>
+      <web-uri>physicianWebApp</web-uri>
+      <context-root>physician</context-root>
+    </web>
+  </module>
+  <module>
+    <web>
+      <web-uri>PhysicianWebServices</web-uri>
+      <context-root>ws_phys</context-root>
+    </web>
+  </module>
+</application>

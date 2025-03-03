@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.bea.com/medrec" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="java:com.bea.medrec.value"/>
+  <xs:element name="registerPatient">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="pPatientVO" type="java:Patient" xmlns:java="java:com.bea.medrec.value"/>
+        <xs:element name="pPassword" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="registerPatientResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="java:Patient" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="addRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="pRecordVO" type="java:Record" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="addRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="java:Record" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="updatePatient">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="pPatientVO" type="java:Patient" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="updatePatientResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="java:Patient" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

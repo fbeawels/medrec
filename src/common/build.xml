@@ -1,0 +1,70 @@
+<project name="common" default="build" basedir=".">
+
+  <!-- set global properties for this build -->
+  <property environment="env"/>
+  <property file="../medrec.properties"/>
+  <property name="build.compiler" value="${compiler}"/>
+
+  <target name="stage" depends="clean,
+                                exceptions,
+                                mbeans,
+                                utils,
+                                value,
+                                web,
+                                listeners"/>
+
+  <target name="stage.prod" depends="clean,
+                                     exceptions,
+                                     mbeans,
+                                     utils,
+                                     value,
+                                     web,
+                                     listeners"/>
+
+  <target name="build" depends="exceptions,
+                                mbeans,
+                                utils,
+                                value,
+                                web,
+                                listeners"/>
+
+  <target name="banner">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <echo message="####   S T A R T   C O M M O N   C O M P O N E N T S   ####"/>
+  </target>
+
+  <target name="mbeans">
+    <ant dir="${basedir}/mbeans" antfile="build.xml"/>
+  </target>
+
+  <target name="exceptions">
+    <ant dir="${basedir}/exceptions" antfile="build.xml"/>
+  </target>
+
+  <target name="utils">
+    <ant dir="${basedir}/utils" antfile="build.xml"/>
+  </target>
+
+  <target name="value">
+    <ant dir="${basedir}/value" antfile="build.xml"/>
+  </target>
+
+  <target name="web">
+    <ant dir="${basedir}/web" antfile="build.xml"/>
+  </target>
+
+  <target name="listeners">
+    <ant dir="${basedir}/listeners" antfile="build.xml"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${exceptions.classpath}"/>
+    <delete dir="${utils.classpath}"/>
+    <delete dir="${value.classpath}"/>
+    <delete dir="${common.web.classpath}"/>
+    <delete dir="${listeners.classpath}"/>
+    <delete dir="${mbeans.classpath}"/>
+  </target>
+
+</project>

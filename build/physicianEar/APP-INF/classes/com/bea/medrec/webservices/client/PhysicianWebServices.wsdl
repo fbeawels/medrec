@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<s0:definitions name="PhysicianWebServicesDefinitions" targetNamespace="http://www.bea.com/medrec" xmlns="" xmlns:s0="http://schemas.xmlsoap.org/wsdl/" xmlns:s1="http://www.bea.com/medrec" xmlns:s2="http://schemas.xmlsoap.org/wsdl/soap/">
+  <s0:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="java:com.bea.medrec.value" xmlns:s0="http://schemas.xmlsoap.org/wsdl/" xmlns:s1="http://www.bea.com/medrec" xmlns:s2="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="Record">
+        <xs:complexContent>
+          <xs:extension base="java:BaseVO" xmlns:java="java:com.bea.medrec.value">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="PatientId" nillable="true" type="xs:int"/>
+              <xs:element minOccurs="1" name="Date" nillable="true" type="xs:dateTime"/>
+              <xs:element minOccurs="1" name="Symptoms" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Diagnosis" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Notes" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Physician" nillable="true" type="java:Physician"/>
+              <xs:element minOccurs="1" name="VitalSigns" nillable="true" type="java:VitalSigns"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="Prescriptions" nillable="true" type="java:Prescription"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="BaseVO">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Id" nillable="true" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Physician">
+        <xs:complexContent>
+          <xs:extension base="java:BaseVO" xmlns:java="java:com.bea.medrec.value">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="FirstName" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="MiddleName" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="LastName" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Phone" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Email" nillable="true" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="VitalSigns">
+        <xs:complexContent>
+          <xs:extension base="java:BaseVO" xmlns:java="java:com.bea.medrec.value">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="Temperature" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="BloodPressure" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Pulse" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Weight" nillable="true" type="xs:int"/>
+              <xs:element minOccurs="1" name="Height" nillable="true" type="xs:int"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="Prescription">
+        <xs:complexContent>
+          <xs:extension base="java:BaseVO" xmlns:java="java:com.bea.medrec.value">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="PatientId" nillable="true" type="xs:int"/>
+              <xs:element minOccurs="1" name="RecordId" nillable="true" type="xs:int"/>
+              <xs:element minOccurs="1" name="DatePrescribed" nillable="true" type="xs:dateTime"/>
+              <xs:element minOccurs="1" name="Drug" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Dosage" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Frequency" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="RefillsRemaining" nillable="true" type="xs:int"/>
+              <xs:element minOccurs="1" name="Instructions" nillable="true" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.bea.com/medrec" xmlns:s0="http://schemas.xmlsoap.org/wsdl/" xmlns:s1="http://www.bea.com/medrec" xmlns:s2="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="java:com.bea.medrec.value"/>
+      <xs:element name="addRecord">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="wsServiceUrl" type="xs:string"/>
+            <xs:element name="pRecordVO" type="java:Record" xmlns:java="java:com.bea.medrec.value"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="addRecordResponse">
+        <xs:complexType>
+          <xs:sequence/>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </s0:types>
+  <s0:message name="addRecord">
+    <s0:part element="s1:addRecord" name="parameters"/>
+  </s0:message>
+  <s0:message name="addRecordResponse">
+    <s0:part element="s1:addRecordResponse" name="parameters"/>
+  </s0:message>
+  <s0:portType name="PhysicianWebServicesPortType">
+    <s0:operation name="addRecord" parameterOrder="parameters">
+      <s0:input message="s1:addRecord"/>
+      <s0:output message="s1:addRecordResponse"/>
+    </s0:operation>
+  </s0:portType>
+  <s0:binding name="PhysicianWebServicesSoapBinding" type="s1:PhysicianWebServicesPortType">
+    <s2:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <s0:operation name="addRecord">
+      <s2:operation soapAction="" style="document"/>
+      <s0:input>
+        <s2:body parts="parameters" use="literal"/>
+      </s0:input>
+      <s0:output>
+        <s2:body use="literal"/>
+      </s0:output>
+    </s0:operation>
+  </s0:binding>
+  <s0:service name="PhysicianWebServices">
+    <s0:port binding="s1:PhysicianWebServicesSoapBinding" name="PhysicianWebServicesPort">
+      <s2:address location="http://localhost:7001/ws_phys/PhysicianWebServices"/>
+    </s0:port>
+  </s0:service>
+</s0:definitions>

@@ -1,0 +1,10 @@
+<project name="wlst_tutorial" default="deploy">
+
+
+  <target name="deploy">
+    <java classname="weblogic.WLST" fork="yes">
+     <arg line="deploy.py" />
+    </java>
+  </target>
+
+</project>

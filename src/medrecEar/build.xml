@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="medrec ear" default="build">
+
+  <property environment="env" />
+
+  <property file="../medrec.properties"/>
+
+  <property name="build.compiler" value="${compiler}" />
+
+  <property name="adminwebapp" value="adminWebApp"/>
+  <property name="mainwebapp" value="mainWebApp"/>
+  <property name="patientwebapp" value="patientWebApp"/>
+  <property name="webservices" value="webServices"/>
+
+  <!-- this is the src directory out of which when combined
+       with the build directory is a wls formatted ear -->
+  <property name="medrec.ear.src.dir" value="." />
+
+  <!-- this is the build directory for the wls formatted ear -->
+  <property name="dest.dir" value="${medrec.ear.wlcompile.build.dir}" />
+
+  <!-- This is an archived J2EE formatted ear, combining
+       the build and src elements of the medrec ear -->
+  <property name="ear.file" value="${medrec.ear.file}" />
+
+  <!-- This is an exploded J2EE formatted ear, combining
+       the build and src elements of the medrec ear -->
+  <property name="ear.exploded.dir" value="${medrec.ear.exploded.dir}" />
+
+  <!-- these all apply to the src and build directory for wls formatted ear -->
+  <property name="app-inf.dest.classes" value="${dest.dir}/APP-INF/classes"/>
+  <property name="app-inf.dest.lib" value="${dest.dir}/APP-INF/lib"/>
+  <property name="app-inf.src.classes" value="${medrec.ear.src.dir}/APP-INF/classes"/>
+  <property name="app-inf.src.lib" value="${medrec.ear.src.dir}/APP-INF/lib"/>
+
+  <!-- Web Service WLS Ant task definitions -->
+  <taskdef name="jwsc" classname="weblogic.wsee.tools.anttasks.JwscTask" />
+
+  <target name="banner">
+    <echo>+---------------------------------------+</echo>
+    <echo>+        Building MedRec Ear            +</echo>
+    <echo>+---------------------------------------+</echo>
+  </target>
+
+  <!-- build and deploy application -->
+  <target name="all" depends="clean, build" />
+  <target name="stage" depends="clean, build, exploded.ear"/>
+  <target name="stage.prod" depends="clean, build, ear"/>
+
+  <target name="prepare">
+    <!--Setup the directories for the ear level -->
+    <mkdir dir="${app-inf.dest.classes}"/>
+    <mkdir dir="${app-inf.dest.lib}"/>
+    <mkdir dir="${app-inf.src.classes}"/>
+    <mkdir dir="${app-inf.src.lib}"/>
+
+    <!-- Copy libs for ear level -->
+    <!-- MedRec jars -->
+    <copy file="${exceptions.classpath}" todir="${app-inf.dest.lib}" />
+    <copy file="${utils.classpath}" todir="${app-inf.dest.lib}" />
+    <copy file="${value.classpath}" todir="${app-inf.dest.lib}" />
+    <copy file="${common.web.classpath}" todir="${app-inf.dest.lib}" />
+    <copy file="${listeners.classpath}" todir="${app-inf.dest.lib}" />
+    <!-- 3rd-party jars -->
+    <copy file="${log.classpath}" todir="${app-inf.dest.lib}" />
+    <copy todir="${app-inf.dest.lib}">
+      <fileset dir="${struts.lib.dir}/" includes="commons-*.jar"/>
+    </copy>
+    <copy todir="${app-inf.dest.lib}">
+      <fileset dir="${struts.lib.dir}/" includes="sslext.jar"/>
+    </copy>
+    <copy file="${struts.classpath}" todir="${app-inf.dest.lib}" />
+    <antcall target="compile.schema"/>
+  </target>
+
+  <taskdef name="ejbgen"
+    classname="com.bea.wls.ejbgen.ant.EJBGenAntTask" />
+  
+  <!-- builds entire application -->
+  <target name="build" depends="build.split.dir, build.ws, appc.splitdir"/>
+
+  <!-- build split-dir components -->
+  <target name="build.split.dir" depends="banner, prepare">
+    <!-- Build worker components first -->
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}"
+               includes="entityEjbs, mainWebApp">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+    <!-- Build worker components first -->
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}"
+               includes="sessionEjbs, patientWebApp">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+    <!-- Build worker components first -->
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}"
+               includes="xml"
+               classpath="${java.class.path};${app-inf.dest.lib}/${xbeans.medrectypes.jar};${dest.dir}/sessionEjbs">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+    <!-- Build more dependent components -->
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}"
+               includes="mdbEjbs, adminWebApp">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- build mail mdbean -->
+  <target name="build.mail.ejb" description="build mail mdbean">
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}" includes="mailEjb">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- build entity ejbs -->
+  <target name="build.entity.ejbs" description="build entity ejbs">
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}" includes="entityEjbs">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- build session ejbs
+       classpath is required due to entity ejbs ejbgen nature -->
+  <target name="build.session.ejbs" description="build session ejbs">
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}" includes="sessionEjbs">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- build registration mdbean
+       classpath is required due to session ejbs ejbgen nature -->
+  <target name="build.registration.ejb" description="build registration mdbean">
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}" includes="registrationEjb">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- build xml processing and parser
+       classpath is required due to session ejbs ejbgen nature -->
+  <target name="build.medrec.xml" description="build xml processing and parser">
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}"
+               classpath="${app-inf.dest.lib}/${xbeans.medrectypes.jar};${java.class.path};${dest.dir}/sessionEjbs"
+               includes="xml">
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- build web service
+       classpath is required due to session ejbs ejbgen nature -->
+  <target name="build.web.services" description="build web services">
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}"
+      includes="webServices">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- build main webapp -->
+  <target name="build.main.webapp" description="build main webapp">
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}"
+               includes="mainWebApp">
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- build admin webapp
+       classpath is required due to session ejbs ejbgen nature -->
+  <target name="build.admin.webapp" description="build admin webapp" depends="prepare">
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}" includes="adminWebApp">
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- build patient webapp
+       classpath is required due to session ejbs ejbgen nature -->
+  <target name="build.patient.webapp" description="build patient webapp" depends="prepare">
+    <wlcompile srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}" includes="patientWebApp">
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <!-- The servicegen Ant task takes as input an EJB JAR file or list of Java
+  classes, and creates all the needed Web service components and packages them
+  into a deployable EAR file.-->
+  <target name="build.ws" description="" depends="build.sync.ws, build.async.reliable.ws"/>
+
+  <!-- build synchronous WS -->
+  <target name="build.sync.ws">
+    <jwsc
+      srcdir="${basedir}/webServices/com/bea/medrec/webservices"
+      sourcepath="${basedir}/webServices"
+      destdir="${dest.dir}"
+      applicationXml="${src.dir}/medrecEar/META-INF/application.xml"
+      classpath="${java.class.path};${dest.dir}/webServices;${dest.dir}/sessionEjbs;${dest.dir}/APP-INF/lib/value.jar;${dest.dir}/APP-INF/lib/utils.jar;${dest.dir}/APP-INF/lib/${log.jar}"
+      keepGenerated="true"
+      deprecation="${deprecation}"
+      debug="${debug}" 
+      verbose="false">
+        <jws file="MedRecWebServices.java" explode="true"/>
+    </jwsc>
+  </target>
+
+  <!-- build relialbe, asynchronous WS -->
+  <target name="build.async.reliable.ws">
+    <jwsc
+      srcdir="${basedir}/webServices/com/bea/medrec/webservices"
+      sourcepath="${basedir}/webServices"
+      destdir="${dest.dir}"
+      applicationXml="${src.dir}/medrecEar/META-INF/application.xml"
+      classpath="${java.class.path};${dest.dir}/webServices;${dest.dir}/sessionEjbs;${dest.dir}/APP-INF/lib/value.jar;${dest.dir}/APP-INF/lib/utils.jar;${dest.dir}/APP-INF/lib/${log.jar}"
+      keepGenerated="true"
+      deprecation="${deprecation}"
+      debug="${debug}" 
+      verbose="false">
+        <jws file="MedRecRMWebServices.java" explode="true"/>
+    </jwsc>
+  </target>
+
+  <target name="appc.splitdir">
+    <wlappc source="${dest.dir}"/>
+  </target>
+
+  <!-- deploys entire application -->
+  <target name="deploy.medrec.ear"
+    description="Deploy build/medrecEar to WebLogic on ${wls.admin.server.host}:${wls.admin.server.port} .">
+    <!-- "url" is not required, but the default url is iiop://${wls.admin.server.host}:${wls.admin.server.port} -->
+    <wldeploy
+      user="${wls.username}"
+      password="${wls.password}"
+      adminurl="t3://${wls.admin.server.host}:${wls.admin.server.port}"
+      action="deploy"
+      name="${medrec.ear.display.name}" 
+      source="${dest.dir}"
+      targets="${medrec.server.name}"
+      submoduletargets="MedRecJMSServer@MedRecAppScopedJMS@MedRecJMSServer"
+      securityModel="CustomRolesAndPolicies"/>
+  </target>
+
+  <target name="redeploy.medrec.ear"
+    description="Redeploy build/medrecEar to WebLogic on ${wls.admin.server.host}:${wls.admin.server.port}.">
+    <!-- "url" is not required, but the default url is iiop://${wls.admin.server.host}:${wls.admin.server.port} -->
+    <wldeploy
+      user="${wls.username}"
+      password="${wls.password}"
+      adminurl="t3://${wls.admin.server.host}:${wls.admin.server.port}"
+      action="redeploy"
+      name="${medrec.ear.display.name}"
+      targets="${medrec.server.name}"
+      submoduletargets="MedRecJMSServer@MedRecAppScopedJMS@MedRecJMSServer"
+      securityModel="CustomRolesAndPolicies"/>
+  </target>
+
+  <!-- package the application as J2EE formatted archived .ear -->
+  <target name="ear">
+    <mkdir dir="${dist.dir}"/>
+    <wlpackage srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}"
+      toFile="${ear.file}" />
+  </target>
+
+  <!-- package the application a J2EE formatted exploded ear -->
+  <target name="exploded.ear">
+    <wlpackage srcdir="${medrec.ear.src.dir}" destdir="${dest.dir}"
+      toDir="${ear.exploded.dir}" />
+  </target>
+
+  <target name="clean" depends="clean.ear,clean.exploded.ear,clean.prepare">
+    <delete dir="${dest.dir}" />
+  </target>
+
+  <target name="clean.ear">
+    <delete file="${ear.file}"/>
+  </target>
+
+  <target name="clean.exploded.ear">
+    <delete dir="${ear.exploded.dir}"/>
+  </target>
+
+  <target name="clean.prepare">
+    <delete dir="${app-inf.dest.classes}"/>
+    <delete dir="${app-inf.dest.lib}"/>
+    <delete dir="${app-inf.src.classes}"/>
+    <delete file="${medrec.ear.src.dir}/sessionEjbs_client.jar"/>
+  </target>
+
+  <target name="compile.schema">
+    <taskdef name="xmlbean" classname="com.bea.xbean.tool.XMLBean"/>
+  	<copy file="${medrec.ear.src.dir}/adminWebApp/MedRecSchema.xsd"
+  			toDir="${medrec.ear.src.dir}/xml/xsd"/>
+  	<copy file="${medrec.ear.src.dir}/adminWebApp/medrec.xsdconfig"
+  			toDir="${medrec.ear.src.dir}/xml/xsd"/>
+    <xmlbean
+      destfile="${app-inf.dest.lib}/${xbeans.medrectypes.jar}"
+      classpath="${dest.dir}/sessionEjbs;${utils.classpath};${exceptions.classpath};${java.class.path}"
+      failonerror="true">
+      <fileset dir="${medrec.ear.src.dir}/xml/xsd" includes="**/*.xsd*"/>
+    </xmlbean>
+
+  </target>
+
+</project>

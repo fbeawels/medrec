@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<title></title>
+  <style type="text/css">
+    <!--code { font-family: Courier New, Courier; font-size: 10pt; margin: 0px; }-->
+  </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head><body>
+
+
+<!-- ======================================================== -->
+<!-- = Java Sourcecode to HTML automatically converted code = -->
+<!-- =   Java2Html Converter 4.2 [2005-06-04] by Markus Gebhard  markus@jave.de   = -->
+<!-- =     Further information: http://www.java2html.de     = -->
+<div align="left" class="java">
+<table border="0" cellpadding="3" cellspacing="0" bgcolor="#ffffff">
+  <!-- start headline -->
+   <tr>
+    <td colspan="2">
+     <center><font size="+2">
+      <code><b>
+PhysicianHeader.jsp
+      </b></code>
+     </font></center>
+    </td>
+   </tr>
+  <!-- end headline -->
+   <tr>
+  <!-- start source code -->
+   <td nowrap="nowrap" valign="top" align="left">
+    <code>
+<a name="1"><font color="#808080">01</font>&nbsp;</a><font color="#000000">&lt;%</font><font color="#646464">@&nbsp;</font><font color="#000000">taglib&nbsp;uri=</font><font color="#2a00ff">&#34;/WEB-INF/struts-bean.tld&#34;&nbsp;</font><font color="#000000">prefix=</font><font color="#2a00ff">&#34;bean&#34;&nbsp;</font><font color="#000000">%&gt;</font><br />
+<a name="2"><font color="#808080">02</font>&nbsp;</a><font color="#000000">&lt;%</font><font color="#646464">@&nbsp;</font><font color="#000000">page&nbsp;</font><font color="#7f0055"><b>import</b></font><font color="#000000">=</font><font color="#2a00ff">&#34;com.bea.medrec.actions.PhysicianConstants&#34;&nbsp;</font><font color="#000000">%&gt;</font><br />
+<a name="3"><font color="#808080">03</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="4"><font color="#808080">04</font>&nbsp;</a><font color="#000000">&lt;!--&nbsp;START&nbsp;Title&nbsp;Bar&nbsp;&nbsp;--&gt;</font><br />
+<a name="5"><font color="#808080">05</font>&nbsp;</a><font color="#000000">&lt;table&nbsp;width=</font><font color="#2a00ff">&#34;100%&#34;&nbsp;</font><font color="#000000">cellpadding=</font><font color="#2a00ff">&#34;0&#34;&nbsp;</font><font color="#000000">cellspacing=</font><font color="#2a00ff">&#34;0&#34;&nbsp;</font><font color="#000000">border=</font><font color="#2a00ff">&#34;0&#34;</font><font color="#000000">&gt;</font><br />
+<a name="6"><font color="#808080">06</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;tr&gt;</font><br />
+<a name="7"><font color="#808080">07</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;td&nbsp;bgcolor=</font><font color="#2a00ff">&#34;#CC3300&#34;&nbsp;</font><font color="#000000">align=left&gt;&lt;img&nbsp;src=</font><font color="#2a00ff">&#34;images/physician_top_banner3.gif&#34;</font><font color="#000000">&gt;&lt;/td&gt;</font><br />
+<a name="8"><font color="#808080">08</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;td&nbsp;bgcolor=</font><font color="#2a00ff">&#34;#CC3300&#34;</font><font color="#000000">&gt;&lt;div&nbsp;</font><font color="#7f0055"><b>class</b></font><font color="#000000">=</font><font color="#2a00ff">&#34;pageheaderphysician&#34;</font><font color="#000000">&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dr.&amp;nbsp;</font><br />
+<a name="9"><font color="#808080">09</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;bean:write&nbsp;name=</font><font color="#2a00ff">&#34;&lt;%=PhysicianConstants.PHYSICIAN_BEAN%&gt;&#34;&nbsp;</font><font color="#000000">property=</font><font color="#2a00ff">&#34;firstName&#34;&nbsp;</font><font color="#000000">scope=</font><font color="#2a00ff">&#34;session&#34;</font><font color="#000000">/&gt;&amp;nbsp;</font><br />
+<a name="10"><font color="#808080">10</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;bean:write&nbsp;name=</font><font color="#2a00ff">&#34;&lt;%=PhysicianConstants.PHYSICIAN_BEAN%&gt;&#34;&nbsp;</font><font color="#000000">property=</font><font color="#2a00ff">&#34;lastName&#34;&nbsp;</font><font color="#000000">scope=</font><font color="#2a00ff">&#34;session&#34;</font><font color="#000000">/&gt;&lt;/div&gt;&lt;/td&gt;</font><br />
+<a name="11"><font color="#808080">11</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;/tr&gt;</font><br />
+<a name="12"><font color="#808080">12</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;tr&gt;</font><br />
+<a name="13"><font color="#808080">13</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;td&nbsp;bgcolor=</font><font color="#2a00ff">&#34;#FFFFCC&#34;</font><font color="#000000">&gt;&lt;img&nbsp;src=</font><font color="#2a00ff">&#34;images/physician_banner_photo.jpg&#34;&nbsp;</font><font color="#000000">width=</font><font color="#2a00ff">&#34;354&#34;&nbsp;</font><font color="#000000">height=</font><font color="#2a00ff">&#34;65&#34;</font><font color="#000000">&gt;&lt;/td&gt;</font><br />
+<a name="14"><font color="#808080">14</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;td&nbsp;bgcolor=</font><font color="#2a00ff">&#34;#FFFFCC&#34;</font><font color="#000000">&gt;&lt;br/&gt;&lt;/td&gt;</font><br />
+<a name="15"><font color="#808080">15</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;/tr&gt;</font><br />
+<a name="16"><font color="#808080">16</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;tr&gt;</font><br />
+<a name="17"><font color="#808080">17</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;td&nbsp;bgcolor=</font><font color="#2a00ff">&#34;#FFFFFF&#34;&nbsp;</font><font color="#000000">height=</font><font color="#990000">1&nbsp;</font><font color="#000000">colspan=</font><font color="#990000">2</font><font color="#000000">&gt;&lt;img&nbsp;src=</font><font color="#2a00ff">&#34;images/clear.gif&#34;&nbsp;</font><font color="#000000">width=</font><font color="#2a00ff">&#34;100&#34;&nbsp;</font><font color="#000000">height=</font><font color="#2a00ff">&#34;1&#34;&nbsp;</font><font color="#000000">alt=</font><font color="#2a00ff">&#34;&#34;&nbsp;</font><font color="#000000">border=</font><font color="#2a00ff">&#34;0&#34;</font><font color="#000000">&gt;&lt;/td&gt;</font><br />
+<a name="18"><font color="#808080">18</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;/tr&gt;</font><br />
+<a name="19"><font color="#808080">19</font>&nbsp;</a><font color="#000000">&lt;/table&gt;</font><br />
+<a name="20"><font color="#808080">20</font>&nbsp;</a><font color="#000000">&lt;!--&nbsp;Title&nbsp;Bar&nbsp;END&nbsp;--&gt;</font></code>
+    
+   </td>
+  <!-- end source code -->
+   </tr>
+</table>
+</div>
+<!-- =       END of automatically generated HTML code       = -->
+<!-- ======================================================== -->
+
+
+</body></html>

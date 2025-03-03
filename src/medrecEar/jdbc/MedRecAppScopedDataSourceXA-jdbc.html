@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<title></title>
+  <style type="text/css">
+    <!--code { font-family: Courier New, Courier; font-size: 10pt; margin: 0px; }-->
+  </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head><body>
+
+
+<!-- ======================================================== -->
+<!-- = Java Sourcecode to HTML automatically converted code = -->
+<!-- =   Java2Html Converter 4.2 [2005-06-04] by Markus Gebhard  markus@jave.de   = -->
+<!-- =     Further information: http://www.java2html.de     = -->
+<div align="left" class="java">
+<table border="0" cellpadding="3" cellspacing="0" bgcolor="#ffffff">
+  <!-- start headline -->
+   <tr>
+    <td colspan="2">
+     <center><font size="+2">
+      <code><b>
+MedRecAppScopedDataSourceXA-jdbc.xml
+      </b></code>
+     </font></center>
+    </td>
+   </tr>
+  <!-- end headline -->
+   <tr>
+  <!-- start source code -->
+   <td nowrap="nowrap" valign="top" align="left">
+    <code>
+<a name="1"><font color="#808080">01</font>&nbsp;</a><font color="#000000">&lt;jdbc-data-source&nbsp;xmlns=</font><font color="#2a00ff">&#34;http://www.bea.com/ns/weblogic/90&#34;</font><br />
+<a name="2"><font color="#808080">02</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">xmlns:sec=</font><font color="#2a00ff">&#34;http://www.bea.com/ns/weblogic/90/security&#34;</font><br />
+<a name="3"><font color="#808080">03</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">xmlns:xsi=</font><font color="#2a00ff">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</font><br />
+<a name="4"><font color="#808080">04</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">xmlns:wls=</font><font color="#2a00ff">&#34;http://www.bea.com/ns/weblogic/90/security/wls&#34;</font><br />
+<a name="5"><font color="#808080">05</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">xsi:schemaLocation=</font><font color="#2a00ff">&#34;http://www.bea.com/ns/weblogic/90/domain.xsd&#34;</font><font color="#000000">&gt;</font><br />
+<a name="6"><font color="#808080">06</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;name&gt;MedRecDataSourceXA&lt;/name&gt;</font><br />
+<a name="7"><font color="#808080">07</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="8"><font color="#808080">08</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;jdbc-driver-params&gt;</font><br />
+<a name="9"><font color="#808080">09</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;url&gt;jdbc:pointbase:server:</font><font color="#3f7f5f">//localhost:9092/demo&lt;/url&gt;</font><br />
+<a name="10"><font color="#808080">10</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;driver-name&gt;com.pointbase.xa.xaDataSource&lt;/driver-name&gt;</font><br />
+<a name="11"><font color="#808080">11</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;properties&gt;</font><br />
+<a name="12"><font color="#808080">12</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;property&gt;</font><br />
+<a name="13"><font color="#808080">13</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;name&gt;user&lt;/name&gt;</font><br />
+<a name="14"><font color="#808080">14</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;value&gt;medrec&lt;/value&gt;</font><br />
+<a name="15"><font color="#808080">15</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;/property&gt;</font><br />
+<a name="16"><font color="#808080">16</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;property&gt;</font><br />
+<a name="17"><font color="#808080">17</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;name&gt;DatabaseName&lt;/name&gt;</font><br />
+<a name="18"><font color="#808080">18</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;value&gt;jdbc:pointbase:server:</font><font color="#3f7f5f">//localhost:9092/demo&lt;/value&gt;</font><br />
+<a name="19"><font color="#808080">19</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;/property&gt;</font><br />
+<a name="20"><font color="#808080">20</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;/properties&gt;</font><br />
+<a name="21"><font color="#808080">21</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;password-encrypted&gt;medrec&lt;/password-encrypted&gt;</font><br />
+<a name="22"><font color="#808080">22</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;/jdbc-driver-params&gt;</font><br />
+<a name="23"><font color="#808080">23</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="24"><font color="#808080">24</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;jdbc-connection-pool-params&gt;</font><br />
+<a name="25"><font color="#808080">25</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;initial-capacity&gt;</font><font color="#990000">2</font><font color="#000000">&lt;/initial-capacity&gt;</font><br />
+<a name="26"><font color="#808080">26</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;max-capacity&gt;</font><font color="#990000">10</font><font color="#000000">&lt;/max-capacity&gt;</font><br />
+<a name="27"><font color="#808080">27</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;capacity-increment&gt;</font><font color="#990000">1</font><font color="#000000">&lt;/capacity-increment&gt;</font><br />
+<a name="28"><font color="#808080">28</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;shrink-frequency-seconds&gt;</font><font color="#990000">900</font><font color="#000000">&lt;/shrink-frequency-seconds&gt;</font><br />
+<a name="29"><font color="#808080">29</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;test-connections-on-reserve&gt;</font><font color="#7f0055"><b>false</b></font><font color="#000000">&lt;/test-connections-on-reserve&gt;</font><br />
+<a name="30"><font color="#808080">30</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;test-table-name&gt;SYSTABLES&lt;/test-table-name&gt;</font><br />
+<a name="31"><font color="#808080">31</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;/jdbc-connection-pool-params&gt;</font><br />
+<a name="32"><font color="#808080">32</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="33"><font color="#808080">33</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;jdbc-data-source-params&gt;</font><br />
+<a name="34"><font color="#808080">34</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;jndi-name&gt;jdbc/MedRecTxDataSource&lt;/jndi-name&gt;</font><br />
+<a name="35"><font color="#808080">35</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;scope&gt;Application&lt;/scope&gt;</font><br />
+<a name="36"><font color="#808080">36</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;global-transactions-protocol&gt;TwoPhaseCommit&lt;/global-transactions-protocol&gt;</font><br />
+<a name="37"><font color="#808080">37</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;/jdbc-data-source-params&gt;</font><br />
+<a name="38"><font color="#808080">38</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="39"><font color="#808080">39</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;jdbc-xa-params&gt;</font><br />
+<a name="40"><font color="#808080">40</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">&lt;/jdbc-xa-params&gt;</font><br />
+<a name="41"><font color="#808080">41</font>&nbsp;</a><font color="#000000">&lt;/jdbc-data-source&gt;</font><br />
+<font color="#ffffff"></font><font color="#ffffff">
+</font></code>
+    
+   </td>
+  <!-- end source code -->
+   </tr>
+</table>
+</div>
+<!-- =       END of automatically generated HTML code       = -->
+<!-- ======================================================== -->
+
+
+</body></html>

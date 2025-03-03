@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+
+<struts-config>
+
+  <!--   F O R M   B E A N S   -->
+  <form-beans>
+    <form-bean
+        name="patientApprovalBean"
+        type="com.bea.medrec.beans.PatientApprovalBean"/>
+    <form-bean
+        name="userBean"
+        type="com.bea.medrec.beans.UserBean"/>
+    <form-bean
+        name="createAdminBean"
+        type="com.bea.medrec.beans.CreateAdminBean"/>
+    <form-bean
+        name="diagnosticsBean"
+        type="com.bea.medrec.beans.DiagnosticsBean"/>
+  </form-beans>
+
+    <!--   G L O B A L   F O R W A R D S   -->
+  <global-forwards>
+    <forward name="medrec.startpage" path="http://localhost:7101/start.jsp" redirect="true"/>
+    <forward name="error" path="/Error.jsp"/>
+    <forward name="home" path="/home.do" redirect="true"/>
+    <forward name="login.home.redirect" path="/login.do" redirect="true"/>
+  </global-forwards>
+
+  <!--   A C T I O N   M A P P I N G S   -->
+  <action-mappings type="org.apache.struts.config.SecureActionConfig">
+    <action
+      path="/approve"
+      type="com.bea.medrec.actions.ApprovePatientRequestAction"
+      name="patientApprovalBean"
+      scope="request"
+      input="/PatientApprovalView.jsp"
+      parameter="action">
+      <set-property property="secure" value="true"/>
+      <forward name="patient.approval.success" path="/viewrequests.do"/>
+      <forward name="patient.approval.failure" path="/viewrequests.do"/>
+    </action>
+
+    <action
+      path="/error"
+      type="com.bea.medrec.actions.ErrorAction">
+      <set-property property="secure" value="false"/>
+      <forward name="error" path="/Error.jsp"/>
+    </action>
+
+    <action
+      path="/diagnostics"
+      type="com.bea.medrec.actions.DiagnosticsAction"
+      name="diagnosticsBean"
+      scope="request"
+      input="/Diagnostics.jsp"
+      parameter="action">
+      <set-property property="secure" value="true"/>
+      <forward name="diagnostics.home" path="/diagnostics.do"/>
+      <forward name="diagnostics" path="/Diagnostics.jsp"/>
+      <forward name="logs" path="/Logs.jsp"/>
+    </action>
+
+    <action
+      path="/import"
+      type="com.bea.medrec.actions.ImportRecordAction"
+      scope="request">
+      <set-property property="secure" value="false"/>
+      <forward name="confirm.import" path="/ConfirmImport.jsp"/>
+      <forward name="view.import.files" path="/viewimports.do"/>
+    </action>
+
+    <action
+      path="/home"
+      type="com.bea.medrec.actions.HomeAction"
+      scope="request">
+      <set-property property="secure" value="false"/>
+      <forward name="home" path="/Home.jsp"/>
+    </action>
+
+    <action
+      path="/login"
+      type="com.bea.medrec.actions.AdminLoginAction"
+      name="userBean"
+      scope="request"
+      input="/Login.jsp"
+      validate="true">
+      <set-property property="secure" value="true"/>
+      <forward name="login.home" path="/Login.jsp"/>
+      <forward name="login.success" path="/home.do"/>
+      <forward name="login.failure" path="/Login.jsp"/>
+    </action>
+
+    <action
+      path="/logout"
+      type="com.bea.medrec.actions.AdminLogoutAction"
+      scope="request">
+      <set-property property="secure" value="false"/>
+    </action>
+
+    <action
+      path="/createnewadmin"
+      type="com.bea.medrec.actions.CreateNewAdminAction"
+      name="createAdminBean"
+      scope="request"
+      input="/CreateNewAdmin.jsp"
+      parameter="action"
+      validate="true">
+      <set-property property="secure" value="true"/>
+      <forward name="create.new.admin" path="/CreateNewAdmin.jsp"/>
+      <forward name="create.new.admin.successful" path="/CreateAdminSuccessful.jsp"/>
+    </action>
+
+
+    <action
+      path="/viewimports"
+      type="com.bea.medrec.actions.ViewImportRecordsAction"
+      scope="request">
+      <set-property property="secure" value="true"/>
+      <forward name="view.import.files" path="/ViewImportRecords.jsp"/>
+    </action>
+
+    <action
+      path="/viewpatientrequest"
+      type="com.bea.medrec.actions.ViewPatientRequestAction"
+      name="userBean"
+      scope="request">
+      <set-property property="secure" value="true"/>
+      <forward name="view.patient.request" path="/ViewPatientRequest.jsp"/>
+    </action>
+
+    <action
+      path="/viewrequests"
+      type="com.bea.medrec.actions.ViewRequestsAction"
+      scope="request">
+      <set-property property="secure" value="true"/>
+      <forward name="view.requests" path="/ViewRequests.jsp"/>
+    </action>
+  </action-mappings>
+
+  <!--   C O N T R O L L E R   -->
+  <controller>
+    <set-property property="debug" value="2"/>
+    <set-property property="nocache" value="true"/>
+  </controller>
+
+  <!--   M E S S A G E   R E S O U R C E S   -->
+  <message-resources
+    parameter="com.bea.medrec.utils.ApplicationResources"/>
+
+  <!--   P L U G - I N S   -->
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property property="pathnames"
+                     value="/WEB-INF/validator-rules.xml,
+                            /WEB-INF/validation.xml"/>
+  </plug-in>
+
+  <plug-in className="org.apache.struts.action.SecurePlugIn">
+    <set-property property="httpPort" value="7101"/>
+    <set-property property="httpsPort" value="7102"/>
+    <set-property property="enable" value="true"/>
+    <set-property property="addSession" value="true"/>
+  </plug-in>
+
+</struts-config>

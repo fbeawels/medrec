@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5">
+  <display-name>MedRecWebServicesWebApp</display-name>
+  <servlet>
+    <servlet-name>MedRecWebServicesServlethttp</servlet-name>
+    <servlet-class>com.bea.medrec.webservices.MedRecWebServices</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MedRecWebServicesServlethttp</servlet-name>
+    <url-pattern>/MedRecWebServices</url-pattern>
+  </servlet-mapping>
+</web-app>

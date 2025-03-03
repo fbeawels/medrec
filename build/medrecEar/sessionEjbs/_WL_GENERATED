@@ -1,0 +1,16 @@
+#Wed Apr 04 12:49:37 PDT 2007
+weblogic-ejb-jar.xml=683259126
+com.bea.medrec.controller.AdminSessionEJB=4122112520
+ejb-jar.xml=3626749268
+com.bea.medrec.controller.RecordSessionHome=1734769091
+com.bea.medrec.controller.AdminSession=2520673064
+com.bea.medrec.controller.RecordSession=962052643
+com.bea.medrec.controller.PatientSessionEJB=3623065839
+com.bea.medrec.controller.RecordSessionEJB=2796941030
+com.bea.medrec.controller.MailSessionHome=904055595
+com.bea.medrec.controller.MailSessionEJB=1182388782
+com.bea.medrec.controller.PatientSessionHome=1321515386
+com.bea.medrec.controller.AdminSessionHome=2730935545
+WLS_RELEASE_BUILD_VERSION_24=10.0.0.0
+com.bea.medrec.controller.MailSession=442456286
+com.bea.medrec.controller.PatientSession=1369009785

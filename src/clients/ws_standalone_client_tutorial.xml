@@ -1,0 +1,25 @@
+<project name="Standalone Web Service Invoke" default="build.ws.client" >
+
+ <taskdef name="clientgen"
+   classname="weblogic.wsee.tools.anttasks.ClientGenTask" />
+
+  <target name="build.ws.client">
+
+    <clientgen
+      wsdl="http://localhost:7101/ws_medrec/MedRecWebServices?WSDL"
+      destDir="c:/medrec_tutorial/build/swing_client/clientgen"
+      packageName="com.bea.medrec.webservices"/>
+
+    <javac
+      srcdir="c:/medrec_tutorial/build/swing_client/clientgen"
+      destdir="c:/medrec_tutorial/build/swing_client/wsclient"
+      includes="**/*.java"/>
+    <javac
+      srcdir="com"
+      destdir="c:/medrec_tutorial/build/swing_client/wsclient"
+      includes="**/*.java"
+      classpath="${java.class.path};c:/medrec_tutorial/build/swing_client/wsclient" />
+
+  </target>
+
+</project>

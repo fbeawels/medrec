@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<weblogic-webservices xmlns="http://www.bea.com/ns/weblogic/90" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <webservice-description>
+    <webservice-description-name>com.bea.medrec.webservices.MedRecRMWebServices</webservice-description-name>
+    <webservice-type>JAXRPC</webservice-type>
+    <port-component>
+      <port-component-name>MedRecRMWebServicesPort</port-component-name>
+      <service-endpoint-address>
+        <webservice-contextpath>ws_rm_medrec</webservice-contextpath>
+        <webservice-serviceuri>/MedRecRMWebServices</webservice-serviceuri>
+      </service-endpoint-address>
+    </port-component>
+  </webservice-description>
+</weblogic-webservices>

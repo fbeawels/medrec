@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/90">
+  <description>Test</description>
+  <servlet-descriptor>
+    <servlet-name>StartBrowser</servlet-name>
+    <init-as-principal-name>weblogic</init-as-principal-name>
+  </servlet-descriptor>
+</weblogic-web-app>

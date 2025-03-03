@@ -1,0 +1,25 @@
+<project name="EJB Web Service Invoke" default="build.ws.client">
+
+  <taskdef name="clientgen"
+      classname="weblogic.wsee.tools.anttasks.ClientGenTask" />
+
+  <target name="build.ws.client">
+
+    <clientgen
+      wsdl="http://localhost:7101/ws_medrec/MedRecWebServices?WSDL"
+      destDir="c:/medrec_tutorial/build/physicianEar/APP-INF/classes"
+      packageName="com.bea.medrec.webservices.client"
+      classpath="${java.class.path};c:/medrec_tutorial/build/physicianEar/APP-INF/lib/value.jar"/>
+
+    <delete includeEmptyDirs="true" failonerror="false" quiet="false">
+      <fileset dir="c:/medrec_tutorial/build/physicianEar/APP-INF/classes/com/bea/medrec/value"/>
+    </delete>
+
+    <javac
+      srcdir="c:/medrec_tutorial/build/physicianEar/APP-INF/classes/com"
+      includes="**/*.java"
+      classpath="${java.class.path};c:/medrec_tutorial/build/physicianEar/APP-INF/lib/value.jar;c:/medrec_tutorial/build/physicianEar/APP-INF/classes"/>
+
+  </target>
+
+</project>

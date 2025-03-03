@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE rmi PUBLIC "-//BEA Systems, Inc.//RMI Runtime DTD 1.0//EN" "rmi.dtd">
+<rmi
+    name="com.bea.medrec.controller.RecordSessionEJB_615z74_EOImpl"
+>
+<cluster
+    clusterable="true"
+    propagate-environment="true"
+>
+</cluster>
+
+<lifecycle
+    dgc-policy="managed"
+>
+</lifecycle>
+
+<method
+    name="getPhysician(com.bea.medrec.value.Physician)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getRecord(java.lang.Integer)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="addRecord(com.bea.medrec.value.Record)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getPrimaryKey()"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="remove()"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getPrescriptions(java.lang.Integer)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getRecordsSummary(java.lang.Integer)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getHandle()"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="isIdentical(javax.ejb.EJBObject)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getRecords(java.lang.Integer)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getEJBHome()"
+    requires-transaction="true"
+>
+</method>
+
+<security
+    client-authentication="supported"
+    client-cert-authentication="supported"
+    identity-assertion="supported"
+    confidentiality="supported"
+    integrity="supported"
+>
+</security>
+
+</rmi>

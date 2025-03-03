@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<wsp:Policy
+   xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+   xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm">
+  <wsrm:RMAssertion>
+    <wsrm:InactivityTimeout
+        Milliseconds="260000" />
+    <wsrm:AcknowledgementInterval
+        Milliseconds="2000" />
+    <wsrm:BaseRetransmissionInterval
+        Milliseconds="50" />
+    <wsrm:SequenceCreation />
+    <wsrm:ExponentialBackoff />
+  </wsrm:RMAssertion>
+</wsp:Policy>

@@ -1,0 +1,308 @@
+package com.bea.medrec.controller;
+
+import com.bea.medrec.utils.MedRecLog4jFactory;
+import com.bea.medrec.utils.MedRecUtils;
+import com.bea.medrec.value.*;
+import com.bea.medrec.webservices.client.MedRecWebServicesPortType;
+import com.bea.medrec.webservices.client.MedRecWebServices_Impl;
+import com.bea.medrec.webservices.client.MedRecWebServices;
+import com.bea.medrec.webservices.client.PhysicianWebServicesPortType;
+import com.bea.medrec.webservices.client.PhysicianWebServices_Impl;
+import com.bea.medrec.webservices.client.PhysicianWebServices;
+import java.rmi.RemoteException;
+import javax.ejb.EJBException;
+import javax.ejb.SessionContext;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.xml.rpc.ServiceException;
+import javax.xml.rpc.Stub;
+import org.apache.log4j.Logger;
+import weblogic.ejb.GenericSessionBean;
+import weblogic.ejbgen.*;
+import weblogic.wsee.jaxrpc.WLStub;
+
+/**
+ * <p>Session Bean implementation for physician functionality including
+ * access MedRec web services.</p>
+ *
+ * @author Copyright (c) 2006 by BEA Systems. All Rights Reserved.
+ */
+@EnvEntries({
+    @EnvEntry(name = "webservice/username",
+              type = "java.lang.String",
+              value = "medrec_webservice_user"),
+    @EnvEntry(name = "webservice/password",
+              type = "java.lang.String",
+              value = "weblogic"),
+    @EnvEntry(name = "webservice/url",
+              type = "java.lang.String",
+              value = "http://localhost:7101/ws_medrec/MedRecWebServices"),
+    @EnvEntry(name = "rm_webservice_client/url",
+              type = "java.lang.String",
+              value = "http://localhost:7101/ws_phys/PhysicianWebServices"),
+    @EnvEntry(name = "rm_webservice_service/url",
+              type = "java.lang.String",
+              value = "http://localhost:7101/ws_rm_medrec/MedRecRMWebServices")
+})
+@JndiName(remote = "PhysicianSessionEJB.PhysicianSessionHome")
+@Session(maxBeansInFreePool = "1000",
+         initialBeansInFreePool = "0",
+         transTimeoutSeconds = "0",
+         type = Session.SessionType.STATELESS,
+         defaultTransaction = Constants.TransactionAttribute.REQUIRED,
+         enableCallByReference = Constants.Bool.TRUE,
+         ejbName = "PhysicianSessionEJB")
+public class PhysicianSessionEJB extends GenericSessionBean {
+  private static Logger logger =
+      MedRecLog4jFactory.getLogger(PhysicianSessionEJB.class.getName());
+
+  // Instance variables
+  private SessionContext ctx;
+  private MedRecWebServicesPortType port;
+  private PhysicianWebServicesPortType rmPort;
+
+  /**
+   * <p>Sets the session context.  Get handles for all
+   * session and entity and JMS connections used throughout
+   * this session bean.</p>
+   *
+   * @param ctx SessionContext Context for session
+   */
+  public void setSessionContext(SessionContext ctx) {
+    this.ctx = ctx;
+    try {
+      // Web service handle.
+      port = getMedRecWebServicesPort();
+      rmPort = getPhysicianWebServicesPort();
+    } catch (Exception e) {
+      throw new EJBException(e);
+    }
+  }
+
+  // Public Methods
+
+  //  A D D   R E C O R D
+  /**
+   * <p>Accesses MedRec Web service adding a record, including
+   * vital signs and prescriptions.</p>
+   *
+   * @param pPhysicianVO
+   * @param pRecordVO
+   * @throws RemoteException
+   */
+  @RemoteMethod()
+  public void addRecord(Physician pPhysicianVO, Record pRecordVO)
+      throws RemoteException {
+    logger.info("Adding record to patient id: "+pRecordVO.getPatientId());
+    logger.debug(pRecordVO.toString());
+    try {
+      pRecordVO.setPhysician(pPhysicianVO);
+      Context initCtx = new InitialContext();
+      String wsServiceUrl = (String) initCtx.lookup(
+          "java:comp/env/rm_webservice_service/url");
+      logger.info("Adding record reliably, asynchronously");
+      rmPort.addRecord(wsServiceUrl, pRecordVO);
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+      throw new EJBException(e);
+    }
+  }
+
+  //  G E T   A   R E C O R D
+  /**
+   * <p>Accesses MedRec Web service retrieving all information
+   * for a visit given a record id. This includes vital signs,
+   * the record, and any prescriptions.</p>
+   *
+   * @param pRecordId Id of the patient.
+   * @return List  List of lite record value objects.
+   * @throws RemoteException
+   */
+  @RemoteMethod()
+  public Record getRecord(Integer pRecordId) throws RemoteException {
+    logger.info("Getting record.");
+    logger.debug("Record Id: "+pRecordId);
+    Record recordVO = null;
+    try {
+      // Get record from MedRec.
+      recordVO = port.getRecord(pRecordId.intValue());
+      logger.debug("Got record from MedRec.");
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+      throw new EJBException(e);
+    }
+    return recordVO;
+  }
+
+  //  G E T   M E D I C A L   R E C O R D   S U M M A R Y
+  /**
+   * <p>Accesses MedRec Web service retrieving  all medical record summary.
+   * This includes a List of abbreviated records, and
+   * a List of current and recent prescriptions.</p>
+   *
+   * @param pPatientId Id of the record.
+   * @return RecordsSummary
+   * @throws RemoteException
+   */
+  @RemoteMethod()
+  public RecordsSummary getRecordsSummary(Integer pPatientId)
+      throws RemoteException {
+    logger.info("Getting records summary.");
+    logger.debug("Patient Id: "+pPatientId.toString());
+    RecordsSummary recSummaryVO = null;
+    try {
+      // Get record summary from MedRec.
+      recSummaryVO = port.getRecordsSummary(pPatientId.intValue());
+      logger.debug("Got record summary from MedRec.");
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+      throw new EJBException(e);
+    }
+    return recSummaryVO;
+  }
+
+  //  S E A R C H   P A T I E N T
+  /**
+   * <p>Find patient by id.</p>
+   *
+   * @param pSearchVO Search value ojbect containing last name or SSN
+   * @return Patient[]  Patient value object.
+   * @throws RemoteException
+   */
+  @RemoteMethod()
+  public Patient[] searchPatients(Search pSearchVO) throws RemoteException {
+    if (!MedRecUtils.isEmpty(pSearchVO.getLastName()))
+      return searchPatientsByLastNameWild(pSearchVO.getLastName());
+    else if (!MedRecUtils.isEmpty(pSearchVO.getSsn()))
+      return searchPatientsBySSN(pSearchVO.getSsn());
+    else
+      return new Patient[0];
+  }
+
+  //  S E A R C H   P A T I E N T
+  /**
+   * <p>Find patient by id.</p>
+   *
+   * @param pSearchString Wild card search last name
+   * @return Patient  Patient value object.
+   * @throws RemoteException
+   */
+  @RemoteMethod()
+  public Patient[] searchPatientsByLastNameWild(String pSearchString)
+      throws RemoteException {
+    logger.info("By wildcard last name.");
+    logger.debug("Last name: "+pSearchString);
+
+    // Declare local variables.
+    Patient[] patientVOs = null;
+    try {
+      // Get patients from MedRec.
+      patientVOs = port.findPatientByLastNameWild(pSearchString);
+      logger.debug("Got patients from MedRec.");
+      logger.debug("Num of results: " +
+          patientVOs.length);
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+      throw new EJBException(e);
+    }
+    return patientVOs;
+  }
+
+  //  S E A R C H   P A T I E N T   B Y   S S N
+  /**
+   * <p>Find patient by id.</p>
+   *
+   * @param pSsn Patient SSN
+   * @return List  List of one patient value objects.
+   * @throws RemoteException
+   */
+  @RemoteMethod()
+  public Patient[] searchPatientsBySSN(String pSsn) throws RemoteException {
+    logger.info("Search for MedRec patients by ssn.");
+    logger.debug("Ssn: "+pSsn);
+
+    // Declare local variables.
+    Patient[] patientVOs = null;
+    try {
+      Patient patientVO = port.findPatientBySsn(pSsn);
+      logger.debug("Got patient from MedRec.");
+      if (patientVO != null)
+        patientVOs = new Patient[]{patientVO};
+      else
+        patientVOs = new Patient[0];
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+      throw new EJBException(e);
+    }
+    return patientVOs;
+  }
+
+  // Private methods
+  /**
+   * <p>Get web service port.</p>
+   */
+  private MedRecWebServicesPortType getMedRecWebServicesPort()
+      throws RemoteException, ServiceException, Exception {
+    logger.info("Looking up web service.");
+
+    // Declare local variables
+    MedRecWebServicesPortType port = null;
+    // MedRec Web Service attributes
+    String wsUrl = null;
+    String wsUsername = null;
+    String wsPassword = null;
+    try {
+      Context initCtx = new InitialContext();
+      wsUrl = (String) initCtx.lookup("java:comp/env/webservice/url");
+      wsUsername = (String) initCtx.lookup("java:comp/env/webservice/username");
+      wsPassword = (String) initCtx.lookup("java:comp/env/webservice/password");
+      logger.debug("MedRec Web Service URL: " +
+          wsUrl);
+      MedRecWebServices service = new MedRecWebServices_Impl(wsUrl+"?WSDL");
+      port = service.getMedRecWebServicesPort(wsUsername, wsPassword);
+    } catch (ServiceException sve) {
+      logger.error(sve.getLinkedCause().getMessage(), sve);
+      throw sve;
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+      throw e;
+    }
+    return port;
+  }
+
+  /**
+   * <p>Get web service port.</p>
+   */
+  private PhysicianWebServicesPortType getPhysicianWebServicesPort()
+      throws RemoteException, ServiceException, Exception {
+    logger.info("Looking up web service.");
+
+    // Declare local variables
+    PhysicianWebServicesPortType port = null;
+    // MedRec Web Service attributes
+    String wsClientUrl = null;
+    String wsUsername = null;
+    String wsPassword = null;
+    try {
+      Context initCtx = new InitialContext();
+      wsClientUrl = (String) initCtx.lookup(
+          "java:comp/env/rm_webservice_client/url");
+      wsUsername = (String) initCtx.lookup("java:comp/env/webservice/username");
+      wsPassword = (String) initCtx.lookup("java:comp/env/webservice/password");
+      logger.debug("MedRec RM Web Service client URL: " +
+          wsClientUrl);
+      PhysicianWebServices service =  new PhysicianWebServices_Impl(wsClientUrl+
+          "?WSDL");
+      port = service.getPhysicianWebServicesPort(wsUsername, wsPassword);
+      Stub stub = (Stub)port;
+      stub._setProperty(WLStub.COMPLEX, "true");
+    } catch (ServiceException sve) {
+      logger.error(sve.getLinkedCause().getMessage(), sve);
+      throw sve;
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+      throw e;
+    }
+    return port;
+  }
+}

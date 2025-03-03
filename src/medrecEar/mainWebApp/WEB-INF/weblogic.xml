@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/90">
+  <session-descriptor>
+    <timeout-secs>300</timeout-secs>
+    <invalidation-interval-secs>60</invalidation-interval-secs>
+    <persistent-store-type>replicated_if_clustered</persistent-store-type>
+  </session-descriptor>
+  <virtual-directory-mapping>
+    <local-path>c:/medrec_tutorial/src/common/web</local-path>
+    <url-pattern>images/*</url-pattern>
+  </virtual-directory-mapping>
+  <virtual-directory-mapping>
+    <local-path>c:/bea/wlserver_10.0/samples</local-path>
+    <url-pattern>server/*</url-pattern>
+  </virtual-directory-mapping>
+  <virtual-directory-mapping>
+    <local-path>c:/bea/wlserver_10.0/samples</local-path>
+    <url-pattern>domains/*</url-pattern>
+  </virtual-directory-mapping>
+  <virtual-directory-mapping>
+    <local-path>c:/bea/wlserver_10.0/samples/server/</local-path>
+    <url-pattern>/examples/*</url-pattern>
+  </virtual-directory-mapping>
+  <virtual-directory-mapping>
+    <local-path>c:/bea/wlserver_10.0/samples/server/</local-path>
+    <url-pattern>docs/*</url-pattern>
+  </virtual-directory-mapping>
+  <virtual-directory-mapping>
+    <local-path>c:/bea/wlserver_10.0/samples/server/</local-path>
+    <url-pattern>medrec/*</url-pattern>
+  </virtual-directory-mapping>
+ 
+  <context-root>/</context-root>
+
+</weblogic-web-app>

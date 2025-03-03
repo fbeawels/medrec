@@ -1,0 +1,52 @@
+<project name="mbeans" default="all" basedir=".">
+
+  <!-- set global properties for this build -->
+  <property environment="env"/>
+  <property file="../../medrec.properties"/>
+  <property name="build.compiler" value="${compiler}"/>
+
+  <property name="mbeans.source" value="."/>
+  <property name="mbeans.build" value="${build.tmp}"/>
+  <property name="dist.mbeans.jar" value="${dist.dir}/mbeans.jar"/>
+  <property name="build.mbeans.jar" value="${build.dir}/mbeans.jar"/>
+
+  <target name="all" depends="build"/>
+
+  <target name="build" depends="clean, banner, compile, jar"/>
+
+  <target name="banner">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <echo message="####   S T A R T   M B E A N S   ####"/>
+    <mkdir dir="${mbeans.build}"/>
+  </target>
+
+  <!-- Compile base value object -->
+  <target name="compile">
+    <javac srcdir="${mbeans.source}" destdir="${mbeans.build}"
+       includes="**/*.java"
+       classpath="${log.classpath}"
+       deprecation="${deprecation}"
+       debug="${debug}" debugLevel="${debugLevel}"
+       />
+  </target>
+
+  <!-- Make a standard jar file -->
+  <target name="jar">
+    <jar jarfile="${dist.mbeans.jar}"
+      basedir="${mbeans.build}"
+      update="yes">
+    </jar>
+    <copy file="${dist.mbeans.jar}" tofile="${build.mbeans.jar}"/>
+    <ant target="clean.build"/>
+  </target>
+
+  <target name="clean.build">
+    <delete dir="${mbeans.build}"/>
+  </target>
+
+  <target name="clean" depends="clean.build">
+    <delete file="${dist.mbeans.jar}"/>
+  </target>
+
+</project>

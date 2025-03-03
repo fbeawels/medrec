@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<j2ee:web-app xmlns:j2ee="http://java.sun.com/xml/ns/j2ee">
+  <servlet>
+    <servlet-name>RegisterMBeans</servlet-name>
+    <servlet-class>com.bea.medrec.init.RegisterMBeansServlet</servlet-class>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegisterMBeans</servlet-name>
+    <url-pattern>webapp_used_for_mbean_registration</url-pattern>
+  </servlet-mapping>
+</j2ee:web-app>

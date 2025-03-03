@@ -1,0 +1,61 @@
+<project name="webservices" default="build" basedir=".">
+  <!-- set global properties for this build -->
+  <property environment="env"/>
+  <property file="../medrec.properties"/>
+  <property name="build.compiler" value="${compiler}"/>
+
+  <property name="srcdir" value="."/>
+  <property name="outputdir" value="${build.dir}/swing_client"/>
+  <property name="clientgen.build" value="${outputdir}/clientgen"/>
+  <property name="webservices.client.build" value="${outputdir}/wsclient"/>
+
+  <taskdef name="clientgen"
+    classname="weblogic.wsee.tools.anttasks.ClientGenTask" />
+
+  <target name="all" depends="build, run"/>
+
+  <target name="build" depends="clean, init, build.ws.client"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <echo message="####   S T A R T   C L I E N T S   ####"/>
+  </target>
+
+  <target name="clean">
+  </target>
+
+	<target name="build.ws.client">
+		<mkdir dir="${clientgen.build}"/>
+		<mkdir dir="${webservices.client.build}"/>
+
+    <clientgen
+      wsdl="${medrec.ear.wlcompile.build.dir}/MedRecWebServices/WEB-INF/MedRecWebServices.wsdl"
+      destDir="${clientgen.build}"
+      packageName="com.bea.medrec.webservices"/>
+    <javac
+      srcdir="${clientgen.build}"
+      destdir="${webservices.client.build}"
+      includes="**/*.java"/>
+    <javac
+      srcdir="${srcdir}"
+      destdir="${webservices.client.build}"
+      includes="com/**/*.java"
+      classpath="${java.class.path};${webservices.client.build}"
+      />
+	</target>
+
+  <!-- call the webservice to get the expected result in the server output -->
+  <target name="run">
+    <echo message="${webservices.client.build}"/>
+    <java classname="com.bea.medrec.webservices.swing.SwingClient" fork="true">
+      <sysproperty key="weblogic.webservice.verbose" value="true"/>
+      <sysproperty key="wsdl.location" value="http://${wls.admin.server.host}:${wls.admin.server.port}/ws_medrec/MedRecWebServices?WSDL"/>
+      <classpath>
+        <pathelement path="${webservices.client.build};"/>
+        <pathelement path="${clientgen.build};"/>
+        <pathelement path="${java.class.path};"/>
+      </classpath>
+    </java>
+  </target>
+</project>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<weblogic-application xmlns="http://www.bea.com/ns/weblogic/90" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <listener>
+    <listener-class>com.bea.medrec.controller.RecordSessionEJBLifecycleListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>com.bea.medrec.listeners.LoggingInitListener</listener-class>
+  </listener>
+  <module>
+    <name>MedRecAppScopedDataSource</name>
+    <type>JDBC</type>
+    <path>jdbc/MedRecAppScopedDataSource-jdbc.xml</path>
+  </module>
+  <module>
+    <name>MedRecAppScopedDataSourceXA</name>
+    <type>JDBC</type>
+    <path>jdbc/MedRecAppScopedDataSourceXA-jdbc.xml</path>
+  </module>
+  <module>
+    <name>MedRecAppScopedJMS</name>
+    <type>JMS</type>
+    <path>jms/MedRecAppScopedJMS-jms.xml</path>
+  </module>
+</weblogic-application>

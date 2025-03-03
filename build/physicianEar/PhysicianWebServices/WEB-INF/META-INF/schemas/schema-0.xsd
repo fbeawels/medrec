@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="java:com.bea.medrec.value" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Record">
+    <xs:complexContent>
+      <xs:extension base="java:BaseVO" xmlns:java="java:com.bea.medrec.value">
+        <xs:sequence>
+          <xs:element name="PatientId" type="xs:int" minOccurs="1" nillable="true"/>
+          <xs:element name="Date" type="xs:dateTime" minOccurs="1" nillable="true"/>
+          <xs:element name="Symptoms" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="Diagnosis" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="Notes" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="Physician" type="java:Physician" minOccurs="1" nillable="true"/>
+          <xs:element name="VitalSigns" type="java:VitalSigns" minOccurs="1" nillable="true"/>
+          <xs:element name="Prescriptions" maxOccurs="unbounded" type="java:Prescription" minOccurs="0" nillable="true"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="BaseVO">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:int" minOccurs="1" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Physician">
+    <xs:complexContent>
+      <xs:extension base="java:BaseVO" xmlns:java="java:com.bea.medrec.value">
+        <xs:sequence>
+          <xs:element name="FirstName" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="MiddleName" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="LastName" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="Phone" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="Email" type="xs:string" minOccurs="1" nillable="true"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VitalSigns">
+    <xs:complexContent>
+      <xs:extension base="java:BaseVO" xmlns:java="java:com.bea.medrec.value">
+        <xs:sequence>
+          <xs:element name="Temperature" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="BloodPressure" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="Pulse" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="Weight" type="xs:int" minOccurs="1" nillable="true"/>
+          <xs:element name="Height" type="xs:int" minOccurs="1" nillable="true"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Prescription">
+    <xs:complexContent>
+      <xs:extension base="java:BaseVO" xmlns:java="java:com.bea.medrec.value">
+        <xs:sequence>
+          <xs:element name="PatientId" type="xs:int" minOccurs="1" nillable="true"/>
+          <xs:element name="RecordId" type="xs:int" minOccurs="1" nillable="true"/>
+          <xs:element name="DatePrescribed" type="xs:dateTime" minOccurs="1" nillable="true"/>
+          <xs:element name="Drug" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="Dosage" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="Frequency" type="xs:string" minOccurs="1" nillable="true"/>
+          <xs:element name="RefillsRemaining" type="xs:int" minOccurs="1" nillable="true"/>
+          <xs:element name="Instructions" type="xs:string" minOccurs="1" nillable="true"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

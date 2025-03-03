@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.6.5
+Created-By: R26.4.0-63_CR302700-72606-1.5.0_06-20061127-1108-win-ia32 
+ (BEA Systems, Inc.)
+

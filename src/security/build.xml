@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project name="security" default="all" basedir=".">
+
+  <!-- set global properties for this build -->
+  <property environment="env"/>
+  <property file="../medrec.properties"/>
+  <property name="build.compiler" value="${compiler}"/>
+
+  <property name="srcdir" value="."/>
+  <property name="security.build" value="${build.tmp}"/>
+  <property name="security.jar.location" value="${medrec.domain.dir}/security"/>
+  <property name="security.jar.name" value="MedRecDBMSPlugin.jar"/>
+
+ <!-- global properties -->
+  <property environment="env"/>
+
+  <target name="all" depends="clean, init, build.dbms.plugin, jar.dbms.plugin"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <echo message="####   S T A R T   S E C U R I T Y   C O M P O N E N T   ####"/>
+    <mkdir dir="${security.build}"/>
+  </target>
+
+  <target name="build.dbms.plugin">
+    <javac srcdir="${srcdir}"
+      destdir="${security.build}"
+      includes="**/*.java"
+      deprecation="${deprecation}"
+      debug="${debug}" debugLevel="${debugLevel}">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+  </target>
+
+  <target name="jar.dbms.plugin">
+    <mkdir dir="${security.jar.location}"/>
+    <jar basedir="${security.build}"
+      destfile="${security.jar.location}/${security.jar.name}"
+      includes="com/bea/medrec/security/**"/>
+  </target>
+
+  <target name="clean">
+    <delete failonerror="false">
+      <fileset dir="${security.jar.location}" includes="${security.jar.name}"/>
+    </delete>
+    <delete dir="${security.build}"/>
+  </target>
+
+</project>

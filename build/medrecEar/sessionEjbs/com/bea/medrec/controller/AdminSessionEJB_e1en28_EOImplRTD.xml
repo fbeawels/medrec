@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE rmi PUBLIC "-//BEA Systems, Inc.//RMI Runtime DTD 1.0//EN" "rmi.dtd">
+<rmi
+    name="com.bea.medrec.controller.AdminSessionEJB_e1en28_EOImpl"
+>
+<cluster
+    clusterable="true"
+    propagate-environment="true"
+>
+</cluster>
+
+<lifecycle
+    dgc-policy="managed"
+>
+</lifecycle>
+
+<method
+    name="insertRecord(java.util.Collection,java.lang.Integer)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="findPatientById(java.lang.Integer)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="assignPatientGroups(java.lang.String)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="remove()"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="processRegistration(com.bea.medrec.value.Registration)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="sendToQueue(java.io.Serializable,javax.jms.QueueSender)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="insertMedicalRecord(java.util.Collection)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="activateAccountStatus(java.lang.String,com.bea.medrec.value.Mail)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="processXMLUpload(java.lang.String)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getUserByUsername(java.lang.String)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="findPatientByEmail(java.lang.String)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getHandle()"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="denyAccountStatus(java.lang.String,com.bea.medrec.value.Mail)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="updateAccountStatus(java.lang.String,java.lang.String)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getPrimaryKey()"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="createPatientAccount(com.bea.medrec.value.User,com.bea.medrec.value.Patient)"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="assignGroups(java.lang.String,java.lang.String[])"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="findNewUsers()"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="getEJBHome()"
+    requires-transaction="true"
+>
+</method>
+<method
+    name="isIdentical(javax.ejb.EJBObject)"
+    requires-transaction="true"
+>
+</method>
+
+<security
+    client-authentication="supported"
+    client-cert-authentication="supported"
+    identity-assertion="supported"
+    confidentiality="supported"
+    integrity="supported"
+>
+</security>
+
+</rmi>

@@ -1,0 +1,20 @@
+<project name="ejbgen_tutorial" default="run-ejbgen">
+
+  <taskdef name="ejbgen"
+           classname="com.bea.wls.ejbgen.ant.EJBGenAntTask" />
+
+  <target name="run-ejbgen">
+
+      <ejbgen
+        source="1.5"
+        outputDir="C:\medrec_tutorial\build\physicianEar\physSessionEjbs"
+        descriptorDir="C:\medrec_tutorial\build\physicianEar\physSessionEjbs\META-INF"
+        forceGeneration="true"
+      >
+        <fileset dir="physSessionEjbs/com/bea/medrec/controller"
+                 includes="PhysicianSessionEJB.ejb" />
+      </ejbgen>
+
+    </target>
+
+</project>

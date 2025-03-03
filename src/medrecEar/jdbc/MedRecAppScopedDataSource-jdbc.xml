@@ -1,0 +1,33 @@
+<jdbc-data-source xmlns="http://www.bea.com/ns/weblogic/90"
+  xmlns:sec="http://www.bea.com/ns/weblogic/90/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:wls="http://www.bea.com/ns/weblogic/90/security/wls"
+  xsi:schemaLocation="http://www.bea.com/ns/weblogic/90/domain.xsd">
+  <name>MedRecDataSource</name>
+
+  <jdbc-driver-params>
+    <url>jdbc:pointbase:server://localhost:9092/demo</url>
+    <driver-name>com.pointbase.jdbc.jdbcUniversalDriver</driver-name>
+    <properties>
+      <property>
+        <name>user</name>
+        <value>MedRec</value>
+      </property>
+    </properties>
+    <password-encrypted>MedRec</password-encrypted>
+  </jdbc-driver-params>
+
+  <jdbc-connection-pool-params>
+    <initial-capacity>1</initial-capacity>
+    <max-capacity>10</max-capacity>
+    <capacity-increment>1</capacity-increment>
+    <shrink-frequency-seconds>900</shrink-frequency-seconds>
+    <test-connections-on-reserve>false</test-connections-on-reserve>
+    <test-table-name>SYSTABLES</test-table-name>
+  </jdbc-connection-pool-params>
+
+  <jdbc-data-source-params>
+    <jndi-name>jdbc/MedRecDataSource</jndi-name>
+    <scope>Application</scope>
+  </jdbc-data-source-params>
+</jdbc-data-source>

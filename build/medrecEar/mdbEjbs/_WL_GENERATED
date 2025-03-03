@@ -1,0 +1,7 @@
+#Wed Apr 04 12:49:33 PDT 2007
+ejb-jar.xml=3060623910
+com.bea.medrec.mail.MailEJB=3099928924
+com.bea.medrec.registration.RegistrationEJB=3248290899
+com.bea.medrec.xml.XMLUploadEJB=3109665810
+weblogic-ejb-jar.xml=480617485
+WLS_RELEASE_BUILD_VERSION_24=10.0.0.0

@@ -1,0 +1,63 @@
+<project name="medrec" default="build" basedir=".">
+
+  <!-- set global properties for this build -->
+  <property environment="env"/>
+  <property file="./medrec.properties"/>
+  <property name="root" value="."/>
+
+  <property name="build.compiler" value="${compiler}"/>
+
+  <target name="init" description="">
+  <echo message="####   S T A R T   M E D R E C   ####"/>
+    <tstamp/>
+    <echo message="Started on ${TODAY} at ${TSTAMP}"/>
+  </target>
+
+  <!-- Clean all build related dirs and jars -->
+  <target name="clean" description="Deletes ${build.dir}/** and ${dist.dir}/**.">
+    <delete includeEmptyDirs="true" failonerror="false">
+      <fileset dir="${build.dir}" includes="**/*"/>
+      <fileset dir="${dist.dir}" includes="**/*"/>
+    </delete>
+  </target>
+
+  <!-- Build all MedRec components.  For development (split-dir). -->
+  <target name="build" depends="init" description="Builds all MedRec components.">
+    <ant inheritAll="false" dir="${root}/startBrowserEar" antfile="build.xml"/>
+    <ant inheritAll="false" dir="${root}/security"/>
+    <ant inheritAll="false" dir="${root}/common"/>
+    <ant inheritAll="false" dir="${root}/medrecEar"/>
+    <ant inheritAll="false" dir="${root}/physicianEar"/>
+    <ant inheritAll="false" dir="${root}/clients"/>
+    <echo message="####   E N D   M E D R E C   ####"/>
+  </target>
+
+  <!-- Build and deploy all MedRec components.  For development (split-dir). -->
+  <target name="deploy.dev" depends="init,clean"
+    description="Builds and stages all MedRec components to split-dir deployment.">
+    <ant inheritAll="false" dir="${root}/startBrowserEar" 
+       antfile="build.xml" target="stage"/>
+    <ant inheritAll="false" dir="${root}/initEar" 
+       antfile="build.xml" target="stage"/>       
+    <ant inheritAll="false" dir="${root}/security"/>
+    <ant inheritAll="false" dir="${root}/common" target="stage"/>
+    <ant inheritAll="false" dir="${root}/medrecEar" target="stage"/>
+    <ant inheritAll="false" dir="${root}/physicianEar" target="stage"/>
+    <ant inheritAll="false" dir="${root}/clients"/>
+    <echo message="####   E N D   M E D R E C   ####"/>
+  </target>
+
+  <!-- Build all MedRec components.  For production (EARs). -->
+  <target name="deploy.prod" depends="init,clean"
+    description="Builds and stages all MedRec components as EARs.">
+    <ant inheritAll="false" dir="${root}/startBrowserEar"
+       antfile="build.xml" target="stage.prod"/>
+    <ant inheritAll="false" dir="${root}/initEar"
+       antfile="build.xml" target="stage.prod"/>
+    <ant inheritAll="false" dir="${root}/security"/>
+    <ant inheritAll="false" dir="${root}/common" target="stage.prod"/>
+    <ant inheritAll="false" dir="${root}/medrecEar" target="stage.prod"/>
+    <ant inheritAll="false" dir="${root}/physicianEar" target="stage.prod"/>
+    <echo message="####   E N D   M E D R E C   ####"/>
+  </target>
+</project>

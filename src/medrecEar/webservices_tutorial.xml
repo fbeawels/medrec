@@ -1,0 +1,28 @@
+<project name="WebServicesTutorial" default="build.ws">
+
+  <path id="jwsc.class.path">
+    <pathelement path="${java.class.path}"/>
+    <pathelement path="c:/medrec_tutorial/build/medrecEar/sessionEjbs"/>
+    <pathelement path="c:/medrec_tutorial/build/medrecEar/APP-INF/lib/value.jar" />
+    <pathelement path="c:/medrec_tutorial/build/medrecEar/APP-INF/lib/utils.jar" />
+    <pathelement path="c:/medrec_tutorial/build/medrecEar/APP-INF/lib/log4j.jar" />
+  </path>
+
+  <taskdef name="jwsc" classname="weblogic.wsee.tools.anttasks.JwscTask" />
+
+  <target name="build.ws">
+
+    <jwsc
+      srcdir="webServices/com/bea/medrec/webservices"
+      sourcepath="webServices"
+      destdir="c:/medrec_tutorial/build/medrecEar"
+      applicationXml="c:/medrec_tutorial/src/medrecEar/META-INF/application.xml"
+    >
+      <classpath refid="jwsc.class.path" />
+      <jws file="MedRecWebServices.java" explode="true"/>
+
+    </jwsc>
+
+  </target>
+
+</project>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.bea.com/medrec" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="java:com.bea.medrec.value"/>
+  <xs:complexType name="ArrayOfPatient_literal">
+    <xs:sequence>
+      <xs:element name="Patient" minOccurs="0" maxOccurs="unbounded" type="java:Patient" nillable="true" xmlns:java="java:com.bea.medrec.value"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPatient_literal" type="med:ArrayOfPatient_literal" xmlns:med="http://www.bea.com/medrec"/>
+  <xs:element name="findPatientByLastNameWild">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="pLastname" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="findPatientByLastNameWildResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="med:ArrayOfPatient_literal" xmlns:med="http://www.bea.com/medrec"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="pRecordId" type="xs:int" nillable="true" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="java:Record" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="findPatientBySsn">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="pPatientSSN" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="findPatientBySsnResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="java:Patient" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getRecordsSummary">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="pPatientId" type="xs:int" nillable="true" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getRecordsSummaryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="java:RecordsSummary" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="updatePatient">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="pPatientVO" type="java:Patient" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="updatePatientResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="java:Patient" xmlns:java="java:com.bea.medrec.value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

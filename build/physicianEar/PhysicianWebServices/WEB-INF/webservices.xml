@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<webservices xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <webservice-description>
+    <webservice-description-name>com.bea.medrec.webservices.PhysicianWebServices</webservice-description-name>
+    <wsdl-file>WEB-INF/PhysicianWebServices.wsdl</wsdl-file>
+    <jaxrpc-mapping-file>WEB-INF/PhysicianWebServices.xml</jaxrpc-mapping-file>
+    <port-component>
+      <port-component-name>PhysicianWebServicesPort</port-component-name>
+      <wsdl-port xmlns:med="http://www.bea.com/medrec">med:PhysicianWebServicesPort</wsdl-port>
+      <service-endpoint-interface>com.bea.medrec.webservices.PhysicianWebServicesPortType</service-endpoint-interface>
+      <service-impl-bean>
+        <servlet-link>PhysicianWebServicesServlethttp</servlet-link>
+      </service-impl-bean>
+    </port-component>
+  </webservice-description>
+</webservices>

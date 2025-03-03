@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="physician ear" default="build" basedir=".">
+
+  <property environment="env" />
+
+  <property file="../medrec.properties"/>
+
+  <property name="build.compiler" value="${compiler}" />
+
+  <property name="physicianwebapp" value="physicianWebApp"/>
+
+  <property name="physician.ear.src.dir" value="${basedir}" />
+  <property name="dest.dir" value="${physician.ear.wlcompile.build.dir}" />
+  <property name="ear.file" value="${physician.ear.file}" />
+  <property name="ear.exploded.dir" value="${physician.ear.exploded.dir}" />
+  <property name="app-inf.dest.classes" value="${dest.dir}/APP-INF/classes"/>
+  <property name="app-inf.dest.lib" value="${dest.dir}/APP-INF/lib"/>
+  <property name="app-inf.src.classes" value="${physician.ear.src.dir}/APP-INF/classes"/>
+  <property name="app-inf.src.lib" value="${physician.ear.src.dir}/APP-INF/lib"/>
+
+  <!-- Web Service WLS Ant task definitions -->
+  <taskdef name="clientgen"
+      classname="weblogic.wsee.tools.anttasks.ClientGenTask" />
+
+  <taskdef name="jwsc" classname="weblogic.wsee.tools.anttasks.JwscTask" />
+
+  <target name="banner">
+    <echo>+---------------------------------------+</echo>
+    <echo>+        Building Physician Ear         +</echo>
+    <echo>+---------------------------------------+</echo>
+  </target>
+
+  <target name="all" depends="clean, build" />
+  <!-- Build application for distribution -->
+  <target name="dist" depends="clean, build, ear" />
+  <target name="stage" depends="clean, build, exploded.ear" />
+  <target name="stage.prod" depends="clean, build, ear" />
+
+  <target name="prepare">
+    <!--Setup the directories for the ear level -->
+    <mkdir dir="${app-inf.dest.classes}"/>
+    <mkdir dir="${app-inf.dest.lib}"/>
+    <mkdir dir="${app-inf.src.classes}"/>
+    <mkdir dir="${app-inf.src.lib}"/>
+
+    <!-- Copy libs for ear level -->
+    <!-- MedRec jars -->
+    <copy file="${exceptions.classpath}" todir="${app-inf.dest.lib}" />
+    <copy file="${utils.classpath}" todir="${app-inf.dest.lib}" />
+    <copy file="${value.classpath}" todir="${app-inf.dest.lib}" />
+    <copy file="${common.web.classpath}" todir="${app-inf.dest.lib}" />
+    <copy file="${listeners.classpath}" todir="${app-inf.dest.lib}" />
+    <!-- 3rd-party jars -->
+    <copy file="${log.classpath}" todir="${app-inf.dest.lib}" />
+    <copy todir="${app-inf.dest.lib}">
+      <fileset dir="${struts.lib.dir}/" includes="commons-*.jar"/>
+    </copy>
+    <copy todir="${app-inf.dest.lib}">
+      <fileset dir="${struts.lib.dir}/" includes="sslext.jar"/>
+    </copy>
+    <copy file="${struts.classpath}" todir="${app-inf.dest.lib}" />
+  </target>
+
+  <!-- builds entire application -->
+  <target name="build" depends="banner,
+                                build.ws,
+                                build.split.dir,
+                                appc.split.dir"/>
+
+  <target name="build.ws" depends="banner,
+                                   prepare,
+                                   build.sync.ws.client,
+                                   build.reliable.async.ws.client,
+                                   build.physician.ws"/>
+
+  <!-- The clientgen Ant task generates a Web service-specific client JAR
+  file that client applications can use to invoke both WebLogic and
+  non-WebLogic Web services. Typically, you use the clientgen Ant task to
+  generate a client JAR file from an existing WSDL file; you can also use it
+  with an EAR file that contains the implementation of a WebLogic Web service. -->
+  <target name="build.sync.ws.client" depends="banner, prepare">
+    <clientgen
+      wsdl="${medrec.ear.wlcompile.build.dir}/MedRecWebServices/WEB-INF/MedRecWebServices.wsdl"
+      destDir="${app-inf.dest.classes}"
+      packageName="${webservice.package.name}.client"
+      jaxRPCWrappedArrayStyle="false"
+      classpath="${java.class.path};${app-inf.dest.lib}/value.jar"/>
+    <!-- FIXME value classes are generated from WSDL which conflict with value.jar, CR193958. -cwall -->
+    <echo message="Delete generated value classes..."/>
+    <delete includeEmptyDirs="true" failonerror="false" quiet="false">
+      <fileset dir="${app-inf.dest.classes}/com/bea/medrec/value"/>
+    </delete>
+    <echo message="Compile generated WS stub and aux classes..."/>
+    <javac
+      srcdir="${app-inf.dest.classes}/com"
+      includes="**/*.java"
+      classpath="${java.class.path};${app-inf.dest.classes};${app-inf.dest.lib}/value.jar"/>
+  </target>
+
+  <target name="build.reliable.async.ws.client" depends="banner, prepare">
+    <clientgen
+      wsdl="${medrec.ear.wlcompile.build.dir}/MedRecRMWebServices/WEB-INF/MedRecRMWebServices.wsdl"
+      destDir="${app-inf.dest.classes}"
+      packageName="${webservice.package.name}.client"
+      classpath="${java.class.path};${app-inf.dest.lib}/value.jar"/>
+    <!-- FIXME value classes are generated from WSDL which conflict with value.jar, CR193958. -cwall -->
+    <echo message="Delete generated value classes..."/>
+    <delete includeEmptyDirs="true" failonerror="false" quiet="false">
+      <fileset dir="${app-inf.dest.classes}/com/bea/medrec/value"/>
+    </delete>
+    <echo message="Compile generated WS stub and aux classes..."/>
+    <javac
+      srcdir="${app-inf.dest.classes}/com"
+      includes="**/webservices/MedRec*.java"
+      classpath="${java.class.path};${app-inf.dest.classes};${app-inf.dest.lib}/value.jar"/>
+    <javac
+      srcdir="${app-inf.dest.classes}/com"
+      includes="**/*.java"
+      classpath="${java.class.path};${app-inf.dest.classes};${app-inf.dest.lib}/value.jar"/>
+  </target>
+
+  <target name="build.physician.ws" description="">
+    <jwsc
+      srcdir="${physician.ear.src.dir}/webServices/com/bea/medrec/webservices"
+      sourcepath="${physician.ear.src.dir}/webServices"
+      destdir="${dest.dir}"
+      applicationXml="${src.dir}/physicianEar/META-INF/application.xml"
+      classpath="${java.class.path};${app-inf.dest.classes};${app-inf.dest.lib}/value.jar;${app-inf.dest.lib}/utils.jar;${dest.dir}/APP-INF/lib/${log.jar}"
+      keepGenerated="true"
+      deprecation="${deprecation}"
+      debug="${debug}" >
+        <jws file="PhysicianWebServices.java" explode="true"/>
+    </jwsc>
+    <!-- generate client package of physician web service -->
+    <clientgen
+      wsdl="${dest.dir}/PhysicianWebServices/WEB-INF/PhysicianWebServices.wsdl"
+      destDir="${app-inf.dest.classes}"
+      packageName="${webservice.package.name}.client"
+      classpath="${java.class.path};${app-inf.dest.lib}/value.jar"/>
+    <!-- FIXME value classes are generated from WSDL which conflict with value.jar, CR193958. -cwall -->
+    <echo message="Delete generated value classes..."/>
+    <delete includeEmptyDirs="true" failonerror="false" quiet="false">
+      <fileset dir="${app-inf.dest.classes}/com/bea/medrec/value"/>
+    </delete>
+    <echo message="Compile generated WS stub and aux classes..."/>
+    <javac
+      srcdir="${app-inf.dest.classes}/com"
+      includes="**/*.java"
+      classpath="${java.class.path};${app-inf.dest.classes};${app-inf.dest.lib}/value.jar"/>
+  </target>
+
+  <!-- components in split-dir structure -->
+  <target name="build.split.dir" depends="banner, prepare">
+    <wlcompile srcdir="${physician.ear.src.dir}" destdir="${dest.dir}">
+      <ejbgen source="${sourceVersion}"/>
+      <javac deprecation="${deprecation}" />
+      <javac debug="${debug}" debugLevel="${debugLevel}" />
+    </wlcompile>
+  </target>
+
+  <target name="appc.split.dir">
+    <wlappc source="${dest.dir}" />
+  </target>
+
+  <target name="appc.exploded.ear">
+    <wlappc source="${ear.exploded.dir}" />
+  </target>
+
+  <target name="appc.ear">
+    <wlappc source="${ear.file}" />
+  </target>
+
+  <!-- deploys entire application -->
+  <target name="deploy.physician.ear"
+    description="Deploy build/physicianEar to WebLogic on ${wls.admin.server.host}:${wls.admin.server.port}.">
+    <!-- "url" is not required, but the default url is iiop://${wls.admin.server.host}:${wls.admin.server.port} -->
+    <wldeploy
+      user="${wls.username}"
+      password="${wls.password}"
+      adminurl="t3://${wls.admin.server.host}:${wls.admin.server.port}"
+      action="deploy"
+      name="${physician.ear.display.name}" 
+      source="${dest.dir}"
+      securityModel="CustomRolesAndPolicies"/>
+  </target>
+
+  <target name="redeploy.physician.ear"
+    description="Redeploy build/physicianEar to WebLogic on ${wls.admin.server.host}:${wls.admin.server.port}.">
+    <!-- "url" is not required, but the default url is iiop://${wls.admin.server.host}:${wls.admin.server.port} -->
+    <wldeploy
+      user="${wls.username}"
+      password="${wls.password}"
+      adminurl="t3://${wls.admin.server.host}:${wls.admin.server.port}"
+      action="redeploy"
+      name="${physician.ear.display.name}"
+      source="${dest.dir}"
+      securityModel="CustomRolesAndPolicies"/>
+  </target>
+
+  <target name="deploy.exploded.ear">
+    <wldeploy user="${wls.username}" password="$wls.{password}"
+              action="deploy" name="${physician.ear.name}" source="${ear.exploded.dir}" />
+  </target>
+
+  <!-- package the application as an EAR -->
+  <target name="ear">
+    <mkdir dir="${dist.dir}"/>
+    <wlpackage srcdir="${physician.ear.src.dir}" destdir="${dest.dir}"
+               toFile="${ear.file}" />
+  </target>
+
+  <target name="exploded.ear">
+    <wlpackage srcdir="${physician.ear.src.dir}" destdir="${dest.dir}"
+               toDir="${ear.exploded.dir}" />
+    <!-- Because images are located outside of medrecEar src -->
+    <copy todir="${ear.exploded.dir}/physicianWebApp/images">
+      <fileset dir="${images.dir}"/>
+    </copy>
+  </target>
+
+  <target name="clean" depends="clean.ear, clean.exploded.ear, clean.prepare">
+    <delete dir="${dest.dir}" />
+  </target>
+
+  <target name="clean.ear">
+    <delete file="${ear.file}"/>
+  </target>
+
+  <target name="clean.exploded.ear">
+    <delete dir="${ear.exploded.dir}"/>
+  </target>
+
+  <target name="clean.prepare">
+    <delete dir="${app-inf.dest.classes}"/>
+    <delete dir="${app-inf.dest.lib}"/>
+    <delete dir="${app-inf.src.classes}"/>
+    <delete file="${physician.ear.src.dir}/physSessionEjbs_client.jar"/>
+  </target>
+
+</project>

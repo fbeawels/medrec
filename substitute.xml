@@ -1,0 +1,33 @@
+<project name="Tutorial Macro-sub" default="replace">
+
+  <property file="./install.properties"/>
+
+  <target name="replace">
+
+    <replace dir="." excludes="substitute.xml">
+      <replacefilter token="@WL_HOME" value='${WL_HOME}'/>
+    </replace>
+
+    <replace dir="." excludes="substitute.xml">
+      <replacefilter token="@SERVER_HOSTNAME" value='${SERVER_HOSTNAME}'/>
+    </replace>
+
+    <replace dir="." excludes="substitute.xml">
+      <replacefilter token="@SERVER_PORT" value='${SERVER_PORT}'/>
+    </replace>
+
+    <replace dir="." excludes="substitute.xml">
+      <replacefilter token="@SERVER_SSL_PORT" value='${SERVER_SSL_PORT}'/>
+    </replace>
+
+    <replace dir="." excludes="substitute.xml">
+      <replacefilter token="@MEDREC_HOME_DIR" value='${MEDREC_HOME_DIR}'/>
+    </replace>
+
+    <replace dir="." excludes="substitute.xml">
+      <replacefilter token="@MEDREC_DOMAIN_DIR" value='${MEDREC_DOMAIN_DIR}'/>
+    </replace>
+
+  </target>
+
+</project>

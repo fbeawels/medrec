@@ -1,0 +1,3 @@
+#
+#Wed Apr 04 12:48:58 PDT 2007
+bea.srcdir=c:/medrec_tutorial/src/medrecEar

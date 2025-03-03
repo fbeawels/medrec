@@ -1,0 +1,52 @@
+<project name="common-listeners" default="all" basedir=".">
+
+  <!-- set global properties for this build -->
+  <property environment="env"/>
+  <property file="../../medrec.properties"/>
+  <property name="build.compiler" value="${compiler}"/>
+
+  <property name="listeners.source" value="${basedir}"/>
+  <property name="listeners.build" value="${build.tmp}"/>
+  <property name="dist.listeners.jar" value="${dist.dir}/listeners.jar"/>
+  <property name="build.listeners.jar" value="${build.dir}/listeners.jar"/>
+
+  <target name="all" depends="build"/>
+
+  <target name="build" depends="clean, banner, compile, jar"/>
+
+  <target name="banner">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <echo message="####   S T A R T   C O M M O N   L I S T E N E R S   ####"/>
+    <mkdir dir="${listeners.build}"/>
+  </target>
+
+  <!-- Compile base value object -->
+  <target name="compile">
+    <javac srcdir="${listeners.source}" destdir="${listeners.build}"
+       includes="**/*.java"
+       classpath="${java.class.path};${log.classpath};${wls.home}/server/lib/wllog4j.jar"
+       deprecation="${deprecation}"
+       debug="${debug}" debugLevel="${debugLevel}"
+       />
+  </target>
+
+  <!-- Make a standard jar file -->
+  <target name="jar">
+    <jar jarfile="${dist.listeners.jar}"
+      basedir="${listeners.build}"
+      update="yes">
+    </jar>
+    <copy file="${dist.listeners.jar}" tofile="${build.listeners.jar}"/>
+    <ant target="clean.build"/>
+  </target>
+
+  <target name="clean.build">
+    <delete dir="${listeners.build}"/>
+  </target>
+
+  <target name="clean" depends="clean.build">
+    <delete file="${dist.listeners.jar}"/>
+  </target>
+
+</project>

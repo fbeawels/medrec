@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/90">
+  <session-descriptor>
+    <timeout-secs>600</timeout-secs>
+    <invalidation-interval-secs>60</invalidation-interval-secs>
+    <persistent-store-type>replicated_if_clustered</persistent-store-type>
+  </session-descriptor>
+  <virtual-directory-mapping>
+    <local-path>c:/medrec_tutorial/src/common/web</local-path>
+    <url-pattern>images/*</url-pattern>
+  </virtual-directory-mapping>
+  <context-root>admin</context-root>
+  <logging>
+    <log-filename>c:/bea/user_projects/domains/MedRecDomain/MedRecWebAppAdmin.log</log-filename>
+  </logging>
+</weblogic-web-app>

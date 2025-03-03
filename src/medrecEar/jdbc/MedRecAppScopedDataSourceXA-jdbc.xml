@@ -1,0 +1,42 @@
+<jdbc-data-source xmlns="http://www.bea.com/ns/weblogic/90"
+  xmlns:sec="http://www.bea.com/ns/weblogic/90/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:wls="http://www.bea.com/ns/weblogic/90/security/wls"
+  xsi:schemaLocation="http://www.bea.com/ns/weblogic/90/domain.xsd">
+  <name>MedRecDataSourceXA</name>
+
+  <jdbc-driver-params>
+    <url>jdbc:pointbase:server://localhost:9092/demo</url>
+    <driver-name>com.pointbase.xa.xaDataSource</driver-name>
+    <properties>
+      <property>
+        <name>user</name>
+        <value>medrec</value>
+      </property>
+      <property>
+        <name>DatabaseName</name>
+        <value>jdbc:pointbase:server://localhost:9092/demo</value>
+      </property>
+    </properties>
+    <password-encrypted>medrec</password-encrypted>
+  </jdbc-driver-params>
+
+  <jdbc-connection-pool-params>
+    <initial-capacity>2</initial-capacity>
+    <max-capacity>10</max-capacity>
+    <capacity-increment>1</capacity-increment>
+    <shrink-frequency-seconds>900</shrink-frequency-seconds>
+    <test-connections-on-reserve>false</test-connections-on-reserve>
+    <test-table-name>SYSTABLES</test-table-name>
+  </jdbc-connection-pool-params>
+
+  <jdbc-data-source-params>
+    <jndi-name>jdbc/MedRecTxDataSource</jndi-name>
+    <scope>Application</scope>
+    <global-transactions-protocol>TwoPhaseCommit</global-transactions-protocol>
+  </jdbc-data-source-params>
+
+  <jdbc-xa-params>
+  </jdbc-xa-params>
+</jdbc-data-source>
+
